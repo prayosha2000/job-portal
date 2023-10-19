@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews</title>
+    <style>
+        /* Your existing CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="review-container">
+        <h2>Customer Reviews</h2>
+        <input type="text" id="customer-review" class="review-input" placeholder="Write your review...">
+        <button id="submit-review" class="review-submit">Submit</button>
+        <div id="reviews">
+            <!-- Customer reviews will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        // Function to load reviews from Local Storage and display them
+        function loadReviews() {
+            const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+            const reviewsContainer = document.getElementById('reviews');
+
+            reviews.forEach((reviewText, index) => {
+                const reviewElement = document.createElement('div');
+                reviewElement.className = 'customer-review';
+                reviewElement.textContent = reviewText;
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete-button';
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', function () {
+                    reviews.splice(index, 1);
+                    localStorage.setItem('reviews', JSON.stringify(reviews));
+                    reviewElement.remove();
+                });
+                reviewElement.appendChild(deleteButton);
+                reviewsContainer.appendChild(reviewElement);
+            });
+        }
+
+        // Add event listener to load reviews when the page loads
+        window.addEventListener('load', loadReviews);
+
+        // JavaScript to handle adding reviews and storing them in Local Storage
+        document.getElementById('submit-review').addEventListener('click', function () {
+            const reviewText = document.getElementById('customer-review').value;
+            if (reviewText.trim() !== '') {
+                const reviewElement = document.createElement('div');
+                reviewElement.className = 'customer-review';
+                reviewElement.textContent = reviewText;
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete-button';
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', function () {
+                    localStorage.setItem('reviews', JSON.stringify(reviews));
+                    reviewElement.remove();
+                });
+                reviewElement.appendChild(deleteButton);
+                document.getElementById('reviews').appendChild(reviewElement);
+                document.getElementById('customer-review').value = '';
+
+                // Store the review in Local Storage
+                const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+                reviews.push(reviewText);
+                localStorage.setItem('reviews', JSON.stringify(reviews));
+            }
+        });
+    </script>
+</body>
+</html>
